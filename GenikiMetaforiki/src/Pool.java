@@ -43,20 +43,10 @@ public class Pool {
 	
 	public double getTotalCharge() {
 		double sum = 0;
-		for(int i=0; i<things.size(); i++) {
-			if(things.get(i).isFood()) {
-				if(things.get(i).isDestinationIsland())
-					return 100 * things.get(i).getKilometresToDestination() * things.get(i).getKilogram();
-				else 
-					return 50 *  things.get(i).getKilometresToDestination() * things.get(i).getKilogram();
-			}
-			else {
-				if(things.get(i).isDestinationIsland())
-					return 20 * things.get(i).getKilometresToDestination() * things.get(i).getKilogram();
-				else 
-					return 15 * things.get(i).getKilometresToDestination() * things.get(i).getKilogram();
-			}
-		}		
+		for(int i=0; i<things.size(); i++)
+			sum = sum + things.get(i).calculateCharge();
+		
 		return sum;
 	}
+
 }

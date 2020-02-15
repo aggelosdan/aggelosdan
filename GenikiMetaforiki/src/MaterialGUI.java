@@ -17,13 +17,13 @@ public class MaterialGUI extends JFrame{
 	private JLabel materialCodeLbl = new JLabel("Material Code: ");
 	private JLabel distanceLbl = new JLabel("Distance to: ");
 	private JLabel weightLbl = new JLabel("Weight: ");
-	
 	private JTextField codeField = new JTextField(10);
 	private JTextField distanceField = new JTextField(5);
 	private JTextField weightField = new JTextField(5);
-	private JCheckBox food = new JCheckBox("FOOD?");
+	//private JCheckBox food = new JCheckBox("FOOD?");
 	private JCheckBox island= new JCheckBox("FOR_ISLAND?");
-	private JButton materialButton = new JButton("Add Material");
+	private JButton foodButton = new JButton("Add Food");
+	private JButton noFoodButton = new JButton("Add NoFood");
 	private JList poolList = new JList();
 	private ArrayList<Pool> trucks;
 
@@ -36,10 +36,11 @@ public class MaterialGUI extends JFrame{
 		panelTop.add(distanceField);		
 		panelTop.add(weightLbl);
 		panelTop.add(weightField);
-		panelCen.add(food);
+		//panelCen.add(food);
 		panelCen.add(island);
 		panelCen.add(poolList);
-		panelBot.add(materialButton);
+		panelBot.add(foodButton);
+		panelBot.add(noFoodButton);
 		
 		
 		DefaultListModel listModel = new DefaultListModel();
@@ -58,7 +59,8 @@ public class MaterialGUI extends JFrame{
 		this.setContentPane(mainPanel);
 		
 		ButtonListener1 listener1 = new ButtonListener1();
-		materialButton.addActionListener(listener1);
+		foodButton.addActionListener(listener1);
+		noFoodButton.addActionListener(listener1);
 		
 		this.pack();
 		this.setLocation(200, 200);
@@ -68,23 +70,42 @@ public class MaterialGUI extends JFrame{
 	
 	class ButtonListener1 implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			String code = codeField.getText();
-			Double kilomet = Double.parseDouble(distanceField.getText());
-			Double klg = Double.parseDouble(weightField.getText());
-			boolean f = food.isSelected();
-			boolean destin = island.isSelected();
+			if(e.getSource() == foodButton) {
+				String code = codeField.getText();
+				Double kilomet = Double.parseDouble(distanceField.getText());
+				Double klg = Double.parseDouble(weightField.getText());
+				boolean f = true;
+				boolean destin = island.isSelected();
 				
-			String selectedPoolText = (String)poolList.getSelectedValue();
+				String selectedPoolText = (String)poolList.getSelectedValue();
 			
-			codeField.setText("                  ");
-			distanceField.setText("       ");
-			weightField.setText("      ");
+				codeField.setText("");
+				distanceField.setText("");
+				weightField.setText("");
 			
-			for(Pool t : trucks) {
-				if(t.getNoOfTruck() == selectedPoolText) {
-					t.addTruck(new Material(code, kilomet, klg, f, destin), t);					}
+				for(Pool t : trucks) {
+					if(t.getNoOfTruck() == selectedPoolText) 
+						t.addTruck(new Food(code, kilomet, klg, destin), t);
+				}
+			}
+			else{
+				String code = codeField.getText();
+				Double kilomet = Double.parseDouble(distanceField.getText());
+				Double klg = Double.parseDouble(weightField.getText());
+				boolean f = false;
+				boolean destin = island.isSelected();
+					
+				String selectedPoolText = (String)poolList.getSelectedValue();
+				
+				codeField.setText("");
+				distanceField.setText("");
+				weightField.setText("");
+				
+				for(Pool t : trucks) {
+					if(t.getNoOfTruck() == selectedPoolText) 
+						t.addTruck(new NoFood(code, kilomet, klg, destin), t);					
+				}
 			}
 		}
-		
 	}
 }
